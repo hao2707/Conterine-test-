@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Conterine | Content Creator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* =========================================
+           1. CẤU HÌNH GIAO DIỆN (CORE STYLE)
+           ========================================= */
+        :root {
+            --bg-deep: #050505;          /* Đen sâu */
+            --bg-card: rgba(20, 20, 20, 0.65); /* Kính đen */
+            --gold-primary: #FFD700;     /* Vàng tươi */
+            --gold-glow: #ffdb1a;        /* Vàng phát sáng */
+            --text-main: #ffffff;
+            --text-sub: #a0a0a0;
+            --border-glass: rgba(255, 215, 0, 0.15); /* Viền vàng mờ */
+            --blur-strength: 20px;       /* Độ mờ kính */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- Hiệu ứng nền Ambient Light (Đốm sáng trôi nổi) --- */
+        .ambient-light {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: floatOrb 10s infinite alternate;
+        }
+        .orb-1 { width: 400px; height: 400px; background: #554400; top: -100px; left: -100px; }
+        .orb-2 { width: 300px; height: 300px; background: #332b00; bottom: 0; right: 0; animation-delay: -5s; }
+        
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 50px); }
+        }
+
+        /* --- Class dùng chung cho hiệu ứng Kính (Glassmorphism) --- */
+        .glass-panel {
+            background: var(--bg-card);
+            backdrop-filter: blur(var(--blur-strength));
+            -webkit-backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+        /* Highlight text vàng */
+        .text-gold {
+            color: var(--gold-primary);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        /* =========================================
+           2. HEADER & NAV
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-sub);
+            font-weight: 500;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--gold-primary);
+        }
+
+        .btn-cta {
+            padding: 10px 25px;
+            background: var(--gold-primary);
+            color: #000;
+            border-radius: 50px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+        .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+        }
+
+        /* =========================================
+           3. HERO SECTION (PHẦN MỞ ĐẦU)
+           ========================================= */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 5% 50px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-sub);
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Thẻ thống kê bay lơ lửng */
+        .stats-float {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            min-width: 200px;
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-primary);
+        }
+
+        .stat-icon {
+            font-size: 24px;
+            color: var(--gold-primary);
+        }
+
+        /* =========================================
+           4. PORTFOLIO GRID (DỰ ÁN)
+           ========================================= */
+        .section-padding {
+            padding: 100px 10%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .section-title .divider {
+            width: 60px;
+            height: 4px;
+            background: var(--gold-primary);
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        /* Lưới Video kiểu Dashboard */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .video-card {
+            overflow: hidden;
+            position: relative;
+            transition: 0.4s;
+            height: 500px; /* Chiều cao cố định cho video dọc */
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.1);
+            border-color: var(--gold-primary);
+        }
+
+        /* Chỗ này để thay Video */
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: #555;
+            position: relative;
+        }
+        
+        .video-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+        }
+
+        .play-btn {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px; height: 60px;
+            background: rgba(255, 215, 0, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: 0.3s;
+        }
+        .video-card:hover .play-btn {
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        .card-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, #000 0%, transparent 100%);
+            z-index: 5;
+        }
+        .card-info h3 { font-size: 1.2rem; margin-bottom: 5px; }
+        .card-info p { font-size: 0.9rem; color: var(--gold-primary); }
+
+        /* =========================================
+           5. SERVICES & PRICING
+           ========================================= */
+        .services-row {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .service-card {
+            flex: 1;
+            min-width: 300px;
+            padding: 40px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .service-card:hover {
+            background: rgba(255, 215, 0, 0.05);
+            border-color: var(--gold-primary);
+        }
+
+        .service-icon {
+            width: 70px; height: 70px;
+            background: linear-gradient(135deg, var(--gold-primary), #b8860b);
+            border-radius: 20px;
+            margin: 0 auto 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #000;
+        }
+
+        .price-tag {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--gold-primary);
+            margin: 20px 0;
+            display: block;
+        }
+
+        .feature-list {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 30px;
+            padding-left: 20px;
+        }
+        .feature-list li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .feature-list li::before {
+            content: '✓';
+            color: var(--gold-primary);
+            position: absolute;
+            left: -20px;
+        }
+
+        /* =========================================
+           6. FOOTER
+           ========================================= */
+        footer {
+            padding: 50px 10%;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: #020202;
+        }
+        .social-links {
+            margin: 20px 0;
+        }
+        .social-links a {
+            color: var(--text-main);
+            font-size: 20px;
+            margin: 0 10px;
+            transition: 0.3s;
+        }
+        .social-links a:hover {
+            color: var(--gold-primary);
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            nav ul { display: none; } /* Ẩn menu trên mobile cho gọn */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-light">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <header>
+        <div class="logo">CONTERINE<span class="text-gold">.</span></div>
+        <nav>
+            <ul>
+                <li><a href="#projects" class="active">Dự Án</a></li>
+                <li><a href="#services">Dịch Vụ</a></li>
+                <li><a href="#about">Về Tôi</a></li>
+            </ul>
+        </nav>
+        <a href="#contact" class="btn-cta">Liên Hệ Ngay</a>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h4>XIN CHÀO, MÌNH LÀ CONTERINE</h4>
+            <h1>Sáng Tạo Nội Dung <br> <span class="text-gold">Đẳng Cấp & Khác Biệt</span></h1>
+            <p>Mình giúp các thương hiệu kể câu chuyện của họ thông qua những video ngắn ấn tượng, hình ảnh sắc nét và chiến lược nội dung đột phá.</p>
+            
+            <div style="margin-top: 30px;">
+                <a href="#projects" class="btn-cta" style="padding: 15px 40px; font-size: 18px;">Xem Portfolio</a>
+            </div>
+
+            <div class="stats-float">
+                <div class="glass-panel stat-card">
+                    <i class="fas fa-video stat-icon"></i>
+                    <div>
+                        <div style="font-weight: bold; font-size: 20px;">100+</div>
+                        <div style="font-size: 12px; color: #888;">Video Đã Làm</div>
+                    </div>
+                </div>
+                <div class="glass-panel stat-card">
+                    <i class="fas fa-users stat-icon"></i>
+                    <div>
+                        <div style="font-weight: bold; font-size: 20px;">1M+</div>
+                        <div style="font-size: 12px; color: #888;">Lượt Xem Tổng</div>
+                    </div>
+                </div>
+                <div class="glass-panel stat-card">
+                    <i class="fas fa-star stat-icon"></i>
+                    <div>
+                        <div style="font-weight: bold; font-size: 20px;">5 Năm</div>
+                        <div style="font-size: 12px; color: #888;">Kinh Nghiệm</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="section-padding">
+        <div class="section-title">
+            <h2>Dự Án Tiêu Biểu</h2>
+            <div class="divider"></div>
+            <p style="margin-top: 15px; color: #888;">Những sản phẩm tâm đắc nhất mình đã thực hiện</p>
+        </div>
+
+        <div class="portfolio-grid">
+            <div class="glass-panel video-card">
+                <div class="video-placeholder">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop" alt="Thumbnail">
+                    <div class="play-btn"><i class="fas fa-play"></i></div>
+                </div>
+                <div class="card-info">
+                    <h3>Video Quảng Cáo TikTok</h3>
+                    <p>Edit • Hiệu ứng • Âm thanh</p>
+                </div>
+            </div>
+
+            <div class="glass-panel video-card">
+                <div class="video-placeholder">
+                    <img src="https://images.unsplash.com/photo-1574717432729-1981270d4947?q=80&w=1000&auto=format&fit=crop" alt="Thumbnail">
+                    <div class="play-btn"><i class="fas fa-play"></i></div>
+                </div>
+                <div class="card-info">
+                    <h3>Review Sản Phẩm Công Nghệ</h3>
+                    <p>Kịch bản • Quay dựng</p>
+                </div>
+            </div>
+
+            <div class="glass-panel video-card">
+                <div class="video-placeholder">
+                    <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1000&auto=format&fit=crop" alt="Thumbnail">
+                    <div class="play-btn"><i class="fas fa-play"></i></div>
+                </div>
+                <div class="card-info">
+                    <h3>Highlight Sự Kiện</h3>
+                    <p>Color Grading • Cinematic</p>
+                </div>
+            </div>
+             <div class="glass-panel video-card">
+                <div class="video-placeholder">
+                    <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=1000&auto=format&fit=crop" alt="Thumbnail">
+                    <div class="play-btn"><i class="fas fa-play"></i></div>
+                </div>
+                <div class="card-info">
+                    <h3>Fashion Teaser</h3>
+                    <p>Visual Effects • Sound Design</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="section-padding" style="background: rgba(255,255,255,0.02);">
+        <div class="section-title">
+            <h2>Bảng Giá & Dịch Vụ</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="services-row">
+            <div class="glass-panel service-card">
+                <div class="service-icon"><i class="fas fa-cut"></i></div>
+                <h3>Edit Video Cơ Bản</h3>
+                <span class="price-tag">500k <small style="font-size: 14px; color:#888;">/video</small></span>
+                <ul class="feature-list">
+                    <li>Cắt ghép cơ bản</li>
+                    <li>Thêm nhạc nền & Hiệu ứng nhẹ</li>
+                    <li>Subtitles đơn giản</li>
+                    <li>Thời gian: 1-2 ngày</li>
+                </ul>
+                <a href="#contact" class="btn-cta" style="background: transparent; border: 1px solid var(--gold-primary); color: var(--gold-primary);">Chọn Gói</a>
+            </div>
+
+            <div class="glass-panel service-card" style="border-color: var(--gold-primary); box-shadow: 0 0 30px rgba(255,215,0,0.1);">
+                <div class="service-icon" style="background: var(--gold-primary); box-shadow: 0 0 20px var(--gold-primary);"><i class="fas fa-magic"></i></div>
+                <h3 class="text-gold">Edit Video Premium</h3>
+                <span class="price-tag">1.500k <small style="font-size: 14px; color:#888;">/video</small></span>
+                <ul class="feature-list">
+                    <li>Mọi tính năng gói Cơ bản</li>
+                    <li>Hiệu ứng Transition xịn xò</li>
+                    <li>Color Grading (Chỉnh màu)</li>
+                    <li>Sound Design chuyên sâu</li>
+                    <li>Hỗ trợ sửa 3 lần</li>
+                </ul>
+                <a href="#contact" class="btn-cta">Chọn Gói Này</a>
+            </div>
+
+            <div class="glass-panel service-card">
+                <div class="service-icon"><i class="fas fa-pen-nib"></i></div>
+                <h3>Trọn Gói Kênh</h3>
+                <span class="price-tag">Liên Hệ</span>
+                <ul class="feature-list">
+                    <li>Lên ý tưởng kịch bản</li>
+                    <li>Quay & Dựng trọn gói</li>
+                    <li>Quản lý kênh & Đăng bài</li>
+                    <li>Tư vấn chiến lược</li>
+                </ul>
+                <a href="#contact" class="btn-cta" style="background: transparent; border: 1px solid var(--gold-primary); color: var(--gold-primary);">Nhận Tư Vấn</a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <h2 style="font-size: 2rem; margin-bottom: 20px;">Sẵn Sàng Làm Việc Cùng Nhau?</h2>
+        <p style="color: #888; margin-bottom: 30px;">Hãy để lại tin nhắn, mình sẽ phản hồi trong vòng 24h.</p>
+        
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+
+        <div style="margin-top: 50px; font-size: 14px; color: #555;">
+            &copy; 2024 Portfolio Conterine. All rights reserved. <br>
+            Designed with <i class="fas fa-heart" style="color: var(--gold-primary);"></i> by AI Assistant.
+        </div>
+    </footer>
+
+</body>
+</html> 
